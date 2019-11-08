@@ -58,6 +58,7 @@ long_study = long_study_tib %>%
   separate(file_name, into = c("study_arm", "subject_id"), sep="_")%>%
   mutate(
     study_arm = recode(study_arm, con = "Control Group", exp = "Experimental Group")
-  ) 
+  ) %>%
+  select(-path)
 ```
 
