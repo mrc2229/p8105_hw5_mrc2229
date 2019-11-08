@@ -7,10 +7,34 @@ output: github_document
 
 ```{r}
 library(tidyverse)
+library(janitor)
+library(rvest)
+```
 
+## Problem 1 - Replace the missing values in the iris data set.
+
+```{r}
 set.seed(10)
 
 iris_with_missing = iris %>% 
   map_df(~replace(.x, sample(1:150, 20), NA)) %>%
   mutate(Species = as.character(Species))
+
+replace_function = function(x) {
+  if(is.numeric(x)) {
+    replace_na(x, round(mean(x, na.rm = TRUE), digits=1))
+  }
+  else if(!is.numeric(x)){
+    replace_na(x,"virginica")
+  }
+}
+
+iris_new = map_df(iris_with_missing, ~replace_function(.x))
 ```
+
+* The iris_is_missing data set has been updated with a function that relpaces missing enteries for numeric variables with the mean of non-missing values and missing character variables are filled in with "virginica". This new dataset is called iris_new.
+
+
+## Problem 2
+
+
