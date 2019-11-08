@@ -54,6 +54,10 @@ long_study = long_study_tib %>%
     week_1:week_8,
     names_to = "week",
     values_to = "value"
-  )
+  ) %>%
+  separate(file_name, into = c("study_arm", "subject_id"), sep="_")%>%
+  mutate(
+    study_arm = recode(study_arm, con = "Control Group", exp = "Experimental Group")
+  ) 
 ```
 
