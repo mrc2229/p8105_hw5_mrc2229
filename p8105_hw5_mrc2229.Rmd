@@ -59,6 +59,10 @@ long_study = long_study_tib %>%
   mutate(
     study_arm = recode(study_arm, con = "Control Group", exp = "Experimental Group")
   ) %>%
-  select(-path)
+  select(-path)%>%
+  mutate(
+    subject_id = str_replace(subject_id, ".csv",""),
+    week = str_replace(week,"week_","")
+  )
 ```
 
