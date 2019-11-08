@@ -43,11 +43,17 @@ data_function = function(y) {
 }
 
 long_study_tib = tibble(
-  datafile = list.files(path = "./hw5data/data"),
-  path = str_c("./hw5data/data", datafile)
+  file_name = list.files(path = "./data/"),
+  path = str_c("./data/", file_name)
 )
 
 long_study = long_study_tib %>%
-    map(path, data_function)
+  mutate(lists = map(path, data_function)) %>%
+  unnest(cols=lists)%>%
+  pivot_longer(
+    week_1:week_8,
+    names_to = "week",
+    values_to = "value"
+  )
 ```
 
