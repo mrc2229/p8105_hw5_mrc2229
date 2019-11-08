@@ -35,6 +35,19 @@ iris_new = map_df(iris_with_missing, ~replace_function(.x))
 * The iris_is_missing data set has been updated with a function that relpaces missing enteries for numeric variables with the mean of non-missing values and missing character variables are filled in with "virginica". This new dataset is called iris_new.
 
 
-## Problem 2
+## Problem 2 - Create a tidy dataframe from a longitudinal study that included a control arm and an experimental arm.
 
+```{r}
+data_function = function(y) {
+  data = read.csv(y)
+}
+
+long_study_tib = tibble(
+  datafile = list.files(path = "./hw5data/data"),
+  path = str_c("./hw5data/data", datafile)
+)
+
+long_study = long_study_tib %>%
+    map(path, data_function)
+```
 
