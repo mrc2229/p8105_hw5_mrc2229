@@ -86,6 +86,10 @@ long_study_plot = long_study %>%
 long_study_plot
 ```
 
+* Looking at this Spaghetti Plot, it is apparent that the obsereved values of those in the experimental arm increase over the 8 weeks, while the values of those in the control arm remain roughly the same.
 
+* In the begining of the study, the mean value of those in the control group was `r long_study %>% group_by(study_arm) %>% filter(study_arm=="Control Group") %>% filter(week=="1") %>% summarise(mean_con=round(mean(value), digits=2)) %>% pull(mean_con)` and in the experimental group it was`r long_study %>% group_by(study_arm) %>% filter(study_arm=="Experimental Group") %>% filter(week=="1") %>% summarise(mean_exp=round(mean(value), digits=2)) %>% pull(mean_exp)`
+
+* At week 8, the mean value of those in the control group was `r long_study %>% group_by(study_arm) %>% filter(study_arm=="Control Group") %>% filter(week=="8") %>% summarise(mean_con_end=round(mean(value), digits=2)) %>% pull(mean_con_end)` and in the experimental group it was `r long_study %>% group_by(study_arm) %>% filter(study_arm=="Experimental Group") %>% filter(week=="8") %>% summarise(mean_exp_end=round(mean(value), digits=2)) %>% pull(mean_exp_end)`
 
 
