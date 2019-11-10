@@ -9,6 +9,8 @@ output: github_document
 library(tidyverse)
 library(janitor)
 library(rvest)
+library(viridis)
+library(broom)
 ```
 
 ## Problem 1 - Replace the missing values in the iris data set.
@@ -64,5 +66,26 @@ long_study = long_study_tib %>%
     subject_id = str_replace(subject_id, ".csv",""),
     week = str_replace(week,"week_","")
   )
+
+## Make a Spaghetti Plot showing Observations of each Subject over Time
+
+long_study_plot = long_study %>%
+  group_by(study_arm, subject_id, week)%>%
+  ggplot(aes(x=week,y=value))+
+  geom_path(aes(group=study_arm, color=study_arm))+
+  scale_color_viridis(
+    discrete = TRUE,
+    name = "Study Arm"
+  )+
+  labs(
+    title = "Observed Value of each Subject over an 8 Week Period",
+    x = "Week Number",
+    y ="Values"
+  ) 
+
+long_study_plot
 ```
+
+
+
 
