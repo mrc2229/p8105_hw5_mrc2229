@@ -144,7 +144,7 @@ effect_power = reg_sim_repeat %>%
     proportion_sig = number_sig/n()
   ) %>%
   ggplot(aes(x=beta1, y=proportion_sig))+
-  geom_point()+
+  geom_point(color="purple")+
   labs(
     title = "Plot of The Association between Effect Size and Power",
     x = "True Value of Beta1",
@@ -179,11 +179,13 @@ estimate_true = reg_sim_repeat %>%
 
 overlay_plot = 
   ggplot(estimate_all, aes(x=beta1, y=mean_beta1_est))+
-  geom_point()+
-  geom_point(data = estimate_true)+
+  geom_point(color="red")+
+  geom_point(data = estimate_true, color="blue")+
   labs(
     title = "True Values of Beta1 and the Mean Estimated Beta1 Values both in 
     All Samples and Samples where the Null is Rejected",
+    caption = "Red = Mean Estimated Beta1 Values of All Samples 
+    Blue = Mean Estimated Beta1 Values of Samples Where Null is Rejected",
     x = "True Value of Beta1",
     y = "Mean Estimate of Beta 1"
   )
