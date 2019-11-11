@@ -155,9 +155,26 @@ effect_power
 
 * The plot of the effect_power data shos that as the effect size increases, as does the power. The values of the betas (effect size) were directly related to the proportion of the time the null was rejected, or power, in an S shaped curve.
 
-## Problem 3: Plot of Beta1 Estimates and True Values of Beta1.
+## Problem 3: Overlaid Plot of Beta1 Estimates and True Values of Beta1.
 
 ```{r}
+estimate_all = reg_sim_repeat %>%
+  group_by(beta1) %>%
+  summarise(
+    mean_beta1_est = mean(estimate)
+  )
 
+estimate_true = reg_sim_repeat %>%
+  mutate(
+    null_rejected = cut(p.value, breaks = c(0,0.05,Inf))
+    ) %>%
+  mutate(
+    null_rejected = recode(null_rejected, "(0.05,Inf]" = "Not Rejected", "(0,0.05]" = "Rejected")
+  ) %>%
+  group_by(beta1) %>%
+  filter(null_rejected=="Rejected") %>%
+  summarise(
+    mean_beta1_est = mean(estimate)
+  )
 ```
 
