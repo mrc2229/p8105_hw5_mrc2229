@@ -91,9 +91,9 @@ long_study_plot
 
 * Looking at this Spaghetti Plot, it is apparent that the obsereved values of those in the experimental arm increase over the 8 weeks, while the values of those in the control arm remain roughly the same.
 
-* In the begining of the study, the mean value of those in the control group was `r long_study %>% group_by(study_arm) %>% filter(study_arm=="Control Group") %>% filter(week=="1") %>% summarise(mean_con=round(mean(value), digits=2)) %>% pull(mean_con)` and in the experimental group it was`r long_study %>% group_by(study_arm) %>% filter(study_arm=="Experimental Group") %>% filter(week=="1") %>% summarise(mean_exp=round(mean(value), digits=2)) %>% pull(mean_exp)`
+* In the begining of the study, the mean value of those in the control group was `r long_study %>% group_by(study_arm) %>% filter(study_arm=="Control Group") %>% filter(week=="1") %>% summarise(mean_con=round(mean(value), digits=2)) %>% pull(mean_con)` and in the experimental group it was`r long_study %>% group_by(study_arm) %>% filter(study_arm=="Experimental Group") %>% filter(week=="1") %>% summarise(mean_exp=round(mean(value), digits=2)) %>% pull(mean_exp)`.
 
-* At week 8, the mean value of those in the control group was `r long_study %>% group_by(study_arm) %>% filter(study_arm=="Control Group") %>% filter(week=="8") %>% summarise(mean_con_end=round(mean(value), digits=2)) %>% pull(mean_con_end)` and in the experimental group it was `r long_study %>% group_by(study_arm) %>% filter(study_arm=="Experimental Group") %>% filter(week=="8") %>% summarise(mean_exp_end=round(mean(value), digits=2)) %>% pull(mean_exp_end)`
+* At week 8, the mean value of those in the control group was `r long_study %>% group_by(study_arm) %>% filter(study_arm=="Control Group") %>% filter(week=="8") %>% summarise(mean_con_end=round(mean(value), digits=2)) %>% pull(mean_con_end)` and in the experimental group it was `r long_study %>% group_by(study_arm) %>% filter(study_arm=="Experimental Group") %>% filter(week=="8") %>% summarise(mean_exp_end=round(mean(value), digits=2)) %>% pull(mean_exp_end)`.
 
 ## Problem 3: A Simulation to Explore Power in a Simple Linear Regression
 
@@ -193,3 +193,8 @@ overlay_plot =
 overlay_plot
 ```
 
+* The above plot shows the values of the true beta on the x-axis and two different measures of the mean estimated betas on the y-axis. The red markers show the values of the mean estimated betas across all samples and the blue markers show the mean estimated betas only for samples where the null was rejected.
+
+* The mean estimated betas across all samples appears to closer approximate the true values based on this plot, though both mean estimates follow the same general trend of the true betas. The mean estimated betas only for samples where the null was rejected just tends to be higher.
+
+* This makes sense because, as shown before, effect size is related to power. If we reject the null more frequently, or increase the power, then the effect size will be larger. In this case by taking the mean estimates of only the betas where the null was rejected, we are artificially increasing the power, and therefore increasing the effect size, or betas. This is why the mean estimates of only the betas where the null was rejected tend to be less accurate than the estimated betas of all samples and generally higher than the true betas.
