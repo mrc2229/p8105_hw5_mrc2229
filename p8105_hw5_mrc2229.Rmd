@@ -113,14 +113,14 @@ regression = function(
 }
 
 reg_sim = 
-  rerun(100, regression(beta1 = 0)) %>%
+  rerun(10000, regression(beta1 = 0)) %>%
   bind_rows() %>%
   select(estimate, p.value)
 
 reg_sim_repeat = tibble(
   beta1 = c(0, 1, 2, 3, 4, 5, 6)) %>%
   mutate(
-    output_list = map(.x = beta1, ~rerun(100, regression(beta1 = .x))),
+    output_list = map(.x = beta1, ~rerun(10000, regression(beta1 = .x))),
     estimate_dfs = map(output_list, bind_rows)) %>%
   unnest(estimate_dfs) %>%
   select(beta1, estimate, p.value)
@@ -195,6 +195,6 @@ overlay_plot
 
 * The above plot shows the values of the true beta on the x-axis and two different measures of the mean estimated betas on the y-axis. The red markers show the values of the mean estimated betas across all samples and the blue markers show the mean estimated betas only for samples where the null was rejected.
 
-* The mean estimated betas across all samples appears to closer approximate the true values based on this plot, though both mean estimates follow the same general trend of the true betas. The mean estimated betas only for samples where the null was rejected just tends to be higher.
+* The mean estimated betas across all samples appears to almost exactly match the true values based on this plot, though both mean estimates follow the same general trend of the true betas. The mean estimated betas only for samples where the null was rejected tends to be higher than the true beta, except when the true beta equals zero and particularly when the value of the beta is between 1 and 4.
 
 * This makes sense because, as shown before, effect size is related to power. If we reject the null more frequently, or increase the power, then the effect size will be larger. In this case by taking the mean estimates of only the betas where the null was rejected, we are artificially increasing the power, and therefore increasing the effect size, or betas. This is why the mean estimates of only the betas where the null was rejected tend to be less accurate than the estimated betas of all samples and generally higher than the true betas.
