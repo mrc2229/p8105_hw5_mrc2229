@@ -52,16 +52,19 @@ long_study_tib = tibble(
 long_study = long_study_tib %>%
   mutate(lists = map(path, data_function)) %>%
   unnest(cols=lists)%>%
+  mutate(
+    subject_id=row_number()
+  )%>%
   pivot_longer(
     week_1:week_8,
     names_to = "week",
     values_to = "value"
   ) %>%
-  separate(file_name, into = c("study_arm", "subject_id"), sep="_")%>%
+  separate(file_name, into = c("study_arm", "id"), sep="_")%>%
   mutate(
     study_arm = recode(study_arm, con = "Control Group", exp = "Experimental Group")
   ) %>%
-  select(-path)%>%
+  select(-path,-id)%>%
   mutate(
     subject_id = str_replace(subject_id, ".csv",""),
     week = str_replace(week,"week_","")
@@ -72,7 +75,7 @@ long_study = long_study_tib %>%
 long_study_plot = long_study %>%
   group_by(study_arm, subject_id, week)%>%
   ggplot(aes(x=week,y=value))+
-  geom_path(aes(group=study_arm, color=study_arm))+
+  geom_path(aes(group=subject_id, color=study_arm))+
   scale_color_viridis(
     discrete = TRUE,
     name = "Study Arm"
@@ -92,4 +95,20 @@ long_study_plot
 
 * At week 8, the mean value of those in the control group was `r long_study %>% group_by(study_arm) %>% filter(study_arm=="Control Group") %>% filter(week=="8") %>% summarise(mean_con_end=round(mean(value), digits=2)) %>% pull(mean_con_end)` and in the experimental group it was `r long_study %>% group_by(study_arm) %>% filter(study_arm=="Experimental Group") %>% filter(week=="8") %>% summarise(mean_exp_end=round(mean(value), digits=2)) %>% pull(mean_exp_end)`
 
+## Problem 3: A Simulation to Explore Power in a Simple Linear Regression
+
+```{r}
+regression = function(
+  n = 30, beta0 = 2, beta1 = 0, var =50
+) {
+  reg_data = tibble(
+    x = rnorm(n),
+    y = beta0 + beta1*x + rnorm (n, 0, 50^0.5)
+  )
+  
+  reg_fit = lm(y~x, data = reg_data)
+  
+  tidy(reg_fit)
+  }
+```
 
