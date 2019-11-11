@@ -117,5 +117,31 @@ reg_sim =
   bind_rows() %>%
   select(estimate, p.value)
 
+reg_sim_repeat = tibble(
+  beta1 = c(0, 1, 2, 3, 4, 5, 6)) %>%
+  mutate(
+    output_list = map(.x = beta1, ~rerun(100, regression(beta1 = .x))),
+    estimate_dfs = map(output_list, bind_rows)) %>%
+  unnest(estimate_dfs) %>%
+  select(beta1, estimate, p.value)
+```
+
+* The above dataset contains the true values of beta1 and the simulated estimates of beta1 and resulting p-values.
+
+## Problem 3: Plot of Effect Size and Power
+
+```{r}
+effect_power = reg_sim_repeat %>%
+  mutate(
+    null_rejected = cut(p.value, breaks = c(0,0.05,Inf))
+    ) %>%
+  mutate(
+    null_rejected = recode(null_rejected, "(0.05,Inf]" = "Not Rejected", "(0,0.05]" = "Rejected")
+  ) %>%
+  group_by(beta1) %>%
+  summarise(
+    number_sig = sum(null_rejected=="Rejected"),
+    proportion_sig = number_sig/n()
+  )
 ```
 
