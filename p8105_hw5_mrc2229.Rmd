@@ -176,5 +176,18 @@ estimate_true = reg_sim_repeat %>%
   summarise(
     mean_beta1_est = mean(estimate)
   )
+
+overlay_plot = 
+  ggplot(estimate_all, aes(x=beta1, y=mean_beta1_est))+
+  geom_point()+
+  geom_point(data = estimate_true)+
+  labs(
+    title = "True Values of Beta1 and the Mean Estimated Beta1 Values both in 
+    All Samples and Samples where the Null is Rejected",
+    x = "True Value of Beta1",
+    y = "Mean Estimate of Beta 1"
+  )
+
+overlay_plot
 ```
 
