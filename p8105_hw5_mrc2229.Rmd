@@ -142,6 +142,22 @@ effect_power = reg_sim_repeat %>%
   summarise(
     number_sig = sum(null_rejected=="Rejected"),
     proportion_sig = number_sig/n()
+  ) %>%
+  ggplot(aes(x=beta1, y=proportion_sig))+
+  geom_point()+
+  labs(
+    title = "Plot of The Association between Effect Size and Power",
+    x = "True Value of Beta1",
+    y = "Proportion of Time the Null was Rejected (Power)"
   )
+effect_power
+```
+
+* The plot of the effect_power data shos that as the effect size increases, as does the power. The values of the betas (effect size) were directly related to the proportion of the time the null was rejected, or power, in an S shaped curve.
+
+## Problem 3: Plot of Beta1 Estimates and True Values of Beta1.
+
+```{r}
+
 ```
 
